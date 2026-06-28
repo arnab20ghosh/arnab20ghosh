@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @arnab20ghosh
-- 👀 I was into technical writing, API documentation, instructional design, etc.
-- 🌱 I’m currently a Technical Product Manager leading a team of Test Automation Framework! 
+- 👀 I was into technical writing, API documentation, instructional design, business analysis, etc.
+- 🌱 I’m currently a Technical Product Manager delivering a new Test Automation Framework for CAD/PLM domain! 
 - 💞️ Here to learn more in Programming, AI, LLMs, RAG, MCP, etc.
 
 <!---
