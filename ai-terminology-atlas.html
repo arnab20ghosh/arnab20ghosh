@@ -1,0 +1,676 @@
+<title>AI Terminology Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDEFE7;
+    --ink:#202A22;
+    --ink-soft:#5B6459;
+    --line:#C7CBB8;
+    --panel:#F8F7EF;
+    --panel-border:#DAD9C9;
+    --accent:#B8862E;
+    --accent-ink:#6E4E14;
+    --cat-1:#4F7196; --cat-2:#5E8A54; --cat-3:#7E5A8C; --cat-4:#B2703A; --cat-5:#2F8482;
+    --cat-6:#B2503F; --cat-7:#4B5A9C; --cat-8:#3A8FA3; --cat-9:#8A8A3E; --cat-10:#9C4E74;
+    --cat-11:#8C3F3F; --cat-12:#5B6B7A; --cat-13:#3E7A5E;
+    --shadow: 0 16px 40px -16px rgba(32,42,34,.32);
+    --font-display:'Fraunces',Georgia,'Times New Roman',serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --font-body:'Work Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12161C; --ink:#E7E4D6; --ink-soft:#A7AD9E; --line:#333F49; --panel:#1A2029; --panel-border:#2B3540;
+      --accent:#D4A73D; --accent-ink:#F3D98A;
+      --cat-1:#7FA3C6; --cat-2:#8FC183; --cat-3:#B084C0; --cat-4:#D99B5F; --cat-5:#5FB8B5;
+      --cat-6:#DD8272; --cat-7:#838FD1; --cat-8:#6FC2D6; --cat-9:#C2C26E; --cat-10:#D080A8;
+      --cat-11:#C4746F; --cat-12:#93A4B3; --cat-13:#6FAF8E;
+      --shadow: 0 16px 40px -16px rgba(0,0,0,.65);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12161C; --ink:#E7E4D6; --ink-soft:#A7AD9E; --line:#333F49; --panel:#1A2029; --panel-border:#2B3540;
+    --accent:#D4A73D; --accent-ink:#F3D98A;
+    --cat-1:#7FA3C6; --cat-2:#8FC183; --cat-3:#B084C0; --cat-4:#D99B5F; --cat-5:#5FB8B5;
+    --cat-6:#DD8272; --cat-7:#838FD1; --cat-8:#6FC2D6; --cat-9:#C2C26E; --cat-10:#D080A8;
+    --cat-11:#C4746F; --cat-12:#93A4B3; --cat-13:#6FAF8E;
+    --shadow: 0 16px 40px -16px rgba(0,0,0,.65);
+  }
+
+  html,body{height:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);}
+  *{box-sizing:border-box;}
+  #app{height:100%;display:flex;flex-direction:column;}
+
+  #header{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:.75rem;
+    padding:.85rem 1.25rem; padding-top:calc(.85rem + env(safe-area-inset-top,0px));
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--panel-border);
+  }
+  .brand{display:flex; flex-direction:column; line-height:1.1;}
+  .eyebrow{font-family:var(--font-mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-ink);}
+  .brand h1{font-family:var(--font-display); font-weight:600; font-size:1.35rem; margin:.1rem 0 0; text-wrap:balance;}
+  .controls{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;}
+
+  .search-wrap{position:relative; display:flex; align-items:center;}
+  #search{
+    font-family:var(--font-body); font-size:.88rem; color:var(--ink);
+    background:var(--panel); border:1px solid var(--panel-border); border-radius:999px;
+    padding:.5rem .9rem; width:12rem; outline:none; transition:border-color .15s, width .2s;
+  }
+  #search:focus{border-color:var(--accent); width:14rem;}
+  #search::placeholder{color:var(--ink-soft);}
+  #clearSearch{
+    position:absolute; right:.4rem; top:50%; transform:translateY(-50%);
+    width:1.4rem; height:1.4rem; border-radius:50%; border:none; cursor:pointer;
+    background:transparent; color:var(--ink-soft); font-size:1rem; line-height:1;
+  }
+  #clearSearch:hover{color:var(--ink);}
+
+  button{font-family:var(--font-body); font-weight:500; font-size:.82rem; cursor:pointer;}
+  button:focus-visible, input:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn{
+    background:var(--panel); color:var(--ink); border:1px solid var(--panel-border);
+    border-radius:999px; padding:.5rem 1rem; white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--accent);}
+  .btn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+  #countBadge{font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); white-space:nowrap;}
+
+  #canvasWrap{position:relative; flex:1; min-height:0; overflow:hidden;}
+  #map{width:100%; height:100%; display:block; cursor:grab;}
+  #map:active{cursor:grabbing;}
+  #map.zoomed-in .leaf-label{opacity:1;}
+
+  .link{fill:none; stroke:var(--line); stroke-width:1.1px; opacity:.85;}
+  .link.dim{opacity:.12;}
+
+  .node circle{transition:opacity .2s, stroke-width .15s;}
+  .node text{font-family:var(--font-mono); fill:var(--ink); paint-order:stroke; transition:opacity .2s;}
+  .node{cursor:pointer;}
+  .node.dim{opacity:.16;}
+  .node.dim text{opacity:0;}
+
+  .node.depth-0 circle{fill:var(--accent); stroke:var(--paper); stroke-width:2px;}
+  .node.depth-0 text{font-family:var(--font-display); font-weight:700; font-size:15px; fill:var(--ink);}
+
+  .node.depth-1 circle{stroke:var(--paper); stroke-width:1.6px;}
+  .node.depth-1 text{font-weight:600; font-size:11.5px; letter-spacing:.01em;}
+  .node.depth-1.cat-1 circle{fill:var(--cat-1);} .node.depth-1.cat-1 text{fill:var(--cat-1);}
+  .node.depth-1.cat-2 circle{fill:var(--cat-2);} .node.depth-1.cat-2 text{fill:var(--cat-2);}
+  .node.depth-1.cat-3 circle{fill:var(--cat-3);} .node.depth-1.cat-3 text{fill:var(--cat-3);}
+  .node.depth-1.cat-4 circle{fill:var(--cat-4);} .node.depth-1.cat-4 text{fill:var(--cat-4);}
+  .node.depth-1.cat-5 circle{fill:var(--cat-5);} .node.depth-1.cat-5 text{fill:var(--cat-5);}
+  .node.depth-1.cat-6 circle{fill:var(--cat-6);} .node.depth-1.cat-6 text{fill:var(--cat-6);}
+  .node.depth-1.cat-7 circle{fill:var(--cat-7);} .node.depth-1.cat-7 text{fill:var(--cat-7);}
+  .node.depth-1.cat-8 circle{fill:var(--cat-8);} .node.depth-1.cat-8 text{fill:var(--cat-8);}
+  .node.depth-1.cat-9 circle{fill:var(--cat-9);} .node.depth-1.cat-9 text{fill:var(--cat-9);}
+  .node.depth-1.cat-10 circle{fill:var(--cat-10);} .node.depth-1.cat-10 text{fill:var(--cat-10);}
+  .node.depth-1.cat-11 circle{fill:var(--cat-11);} .node.depth-1.cat-11 text{fill:var(--cat-11);}
+  .node.depth-1.cat-12 circle{fill:var(--cat-12);} .node.depth-1.cat-12 text{fill:var(--cat-12);}
+  .node.depth-1.cat-13 circle{fill:var(--cat-13);} .node.depth-1.cat-13 text{fill:var(--cat-13);}
+
+  .node.depth-2 circle{fill:var(--panel); stroke-width:1.4px;}
+  .node.depth-2 text.leaf-label{font-weight:400; font-size:9.5px; fill:var(--ink-soft); opacity:0;}
+  .node.depth-2.cat-1 circle{stroke:var(--cat-1);} .node.depth-2.cat-2 circle{stroke:var(--cat-2);}
+  .node.depth-2.cat-3 circle{stroke:var(--cat-3);} .node.depth-2.cat-4 circle{stroke:var(--cat-4);}
+  .node.depth-2.cat-5 circle{stroke:var(--cat-5);} .node.depth-2.cat-6 circle{stroke:var(--cat-6);}
+  .node.depth-2.cat-7 circle{stroke:var(--cat-7);} .node.depth-2.cat-8 circle{stroke:var(--cat-8);}
+  .node.depth-2.cat-9 circle{stroke:var(--cat-9);} .node.depth-2.cat-10 circle{stroke:var(--cat-10);}
+  .node.depth-2.cat-11 circle{stroke:var(--cat-11);} .node.depth-2.cat-12 circle{stroke:var(--cat-12);}
+  .node.depth-2.cat-13 circle{stroke:var(--cat-13);}
+
+  .node.match circle{stroke:var(--accent); stroke-width:2.4px;}
+  .node.match .leaf-label, .node.match text{opacity:1 !important; font-weight:600;}
+  .node.selected circle{stroke:var(--accent); stroke-width:2.6px;}
+  .node.selected .leaf-label, .node.selected text{opacity:1 !important;}
+
+  .card{
+    position:absolute; background:var(--panel); border:1px solid var(--panel-border);
+    border-radius:14px; box-shadow:var(--shadow); z-index:15;
+  }
+  .card-head{display:flex; align-items:center; justify-content:space-between; gap:.5rem;}
+  .card-head button{
+    background:transparent; border:none; color:var(--ink-soft); font-size:1.1rem;
+    width:1.6rem; height:1.6rem; border-radius:50%; line-height:1;
+  }
+  .card-head button:hover{background:var(--paper); color:var(--ink);}
+
+  #legend{top:1rem; left:1rem; width:15.5rem; padding:.85rem 1rem 1rem; max-height:min(70vh,32rem); overflow-y:auto;}
+  #legend h2{font-family:var(--font-display); font-size:.98rem; font-weight:600; margin:0;}
+  #legendList{list-style:none; margin:.7rem 0 0; padding:0; display:flex; flex-direction:column; gap:.15rem;}
+  .legend-item{
+    display:flex; align-items:center; gap:.55rem; width:100%; text-align:left;
+    background:transparent; border:none; border-radius:8px; padding:.4rem .45rem;
+    font-size:.78rem; color:var(--ink);
+  }
+  .legend-item:hover{background:var(--paper);}
+  .legend-item.active{background:var(--paper); font-weight:600;}
+  .legend-dot{width:.6rem; height:.6rem; border-radius:50%; flex:none;}
+  .legend-count{margin-left:auto; font-family:var(--font-mono); font-size:.7rem; color:var(--ink-soft);}
+
+  #infoPanel{top:1rem; right:1rem; width:20rem; max-width:calc(100% - 2rem); padding:1rem 1.15rem 1.2rem;}
+  .tag{
+    font-family:var(--font-mono); font-size:.66rem; letter-spacing:.06em; text-transform:uppercase;
+    color:#fff; padding:.22rem .55rem; border-radius:999px; display:inline-block;
+  }
+  #infoTerm{font-family:var(--font-display); font-size:1.15rem; font-weight:600; margin:.6rem 0 .4rem; text-wrap:balance;}
+  #infoDef{font-size:.88rem; line-height:1.55; color:var(--ink-soft); margin:0;}
+
+  #zoomControls{position:absolute; bottom:1rem; right:1rem; display:flex; flex-direction:column; gap:.4rem; z-index:15;}
+  #zoomControls button{
+    width:2.1rem; height:2.1rem; border-radius:50%; border:1px solid var(--panel-border);
+    background:var(--panel); color:var(--ink); font-size:1.05rem; box-shadow:var(--shadow);
+  }
+  #zoomControls button:hover{border-color:var(--accent);}
+
+  #hint{
+    position:absolute; bottom:1rem; left:1rem; font-family:var(--font-mono); font-size:.68rem;
+    color:var(--ink-soft); background:color-mix(in srgb, var(--panel) 85%, transparent);
+    padding:.35rem .6rem; border-radius:999px; border:1px solid var(--panel-border); z-index:14;
+  }
+
+  @media (max-width:680px){
+    .brand h1{font-size:1.15rem;}
+    #search{width:9rem;} #search:focus{width:10rem;}
+    #legend{width:calc(100% - 2rem); max-height:45vh;}
+    #infoPanel{
+      top:auto; right:0; left:0; bottom:0; width:100%; max-width:100%;
+      border-radius:16px 16px 0 0; max-height:50vh; overflow-y:auto;
+      padding-bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));
+    }
+    #hint{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+
+<div id="app">
+  <header id="header">
+    <div class="brand">
+      <span class="eyebrow">Field Guide</span>
+      <h1>AI Terminology Atlas</h1>
+    </div>
+    <div class="controls">
+      <span id="countBadge"></span>
+      <div class="search-wrap">
+        <input id="search" type="text" placeholder="Search terms…" aria-label="Search terms" autocomplete="off">
+        <button id="clearSearch" hidden aria-label="Clear search">×</button>
+      </div>
+      <button class="btn" id="legendToggle" type="button">Legend</button>
+      <button class="btn" id="resetView" type="button">Reset view</button>
+    </div>
+  </header>
+
+  <div id="canvasWrap">
+    <svg id="map" role="img" aria-label="Radial mind map of AI and machine learning terminology, organized into thirteen categories branching from a central AI node"></svg>
+
+    <div id="legend" class="card" hidden>
+      <div class="card-head">
+        <h2>Categories</h2>
+        <button id="legendClose" aria-label="Close legend">×</button>
+      </div>
+      <ul id="legendList"></ul>
+    </div>
+
+    <aside id="infoPanel" class="card" hidden>
+      <div class="card-head">
+        <span id="infoCategory" class="tag"></span>
+        <button id="infoClose" aria-label="Close">×</button>
+      </div>
+      <h2 id="infoTerm"></h2>
+      <p id="infoDef"></p>
+    </aside>
+
+    <div id="zoomControls">
+      <button id="zoomIn" aria-label="Zoom in">+</button>
+      <button id="zoomOut" aria-label="Zoom out">−</button>
+    </div>
+
+    <div id="hint">Click a term for its definition · scroll or pinch to explore</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var CATEGORIES = [
+    { id:1, name:"Foundations & Core Concepts", blurb:"The vocabulary underneath every other branch — what “intelligence” means to a machine and how these systems are built.", terms:[
+      ["Artificial Intelligence (AI)","The field and practice of building systems that perform tasks normally requiring human intelligence — perceiving, reasoning, deciding, generating."],
+      ["Machine Learning (ML)","A subset of AI where systems learn patterns from data rather than following hand-written rules."],
+      ["Deep Learning","A subset of ML using multi-layered neural networks to learn increasingly abstract representations of data."],
+      ["Algorithm","A defined sequence of steps a system follows to transform input into output."],
+      ["Model","The artifact produced by training — a set of learned parameters that maps inputs to predictions."],
+      ["Parameter","A learned numeric value (a weight or bias) inside a model that determines its behavior."],
+      ["Weight","A parameter that scales how much one neuron's output influences the next."],
+      ["Bias (model term)","A learned offset added to a neuron's weighted input — distinct from statistical or social bias."],
+      ["Inference","Running a trained model on new input to produce an output, as opposed to training it."],
+      ["Narrow AI","AI built to perform one specific task well, with no general reasoning beyond it — nearly all deployed AI today."],
+      ["Artificial General Intelligence (AGI)","A hypothetical system with human-level reasoning and adaptability across any task."],
+      ["Artificial Superintelligence (ASI)","A hypothetical intelligence that substantially exceeds human capability across all domains."],
+      ["Turing Test","A 1950 proposal that a machine is intelligent if its conversation is indistinguishable from a human's."],
+      ["Symbolic AI","The classical approach of encoding knowledge as explicit rules and logic rather than learning it from data."]
+    ]},
+    { id:2, name:"Machine Learning Paradigms", blurb:"The different ways a model can be taught, from labeled examples to trial-and-error reward.", terms:[
+      ["Supervised Learning","Training a model on labeled input-output pairs so it learns to predict the label for new inputs."],
+      ["Unsupervised Learning","Finding structure — clusters, patterns — in data that has no labels."],
+      ["Semi-Supervised Learning","Training on a small labeled dataset combined with a much larger unlabeled one."],
+      ["Self-Supervised Learning","Generating labels automatically from the data itself, e.g. predicting a masked word — how most LLMs are pretrained."],
+      ["Reinforcement Learning (RL)","Training an agent to maximize cumulative reward through trial-and-error interaction with an environment."],
+      ["RLHF","Reinforcement Learning from Human Feedback — fine-tuning a model using human preference rankings as the reward signal."],
+      ["Transfer Learning","Reusing a model trained on one task as the starting point for a related task."],
+      ["Few-Shot Learning","Adapting a model to a new task from only a handful of examples."],
+      ["Zero-Shot Learning","A model performing a task it was never explicitly trained or shown examples for."],
+      ["Online Learning","Updating a model continuously as new data arrives, rather than retraining from scratch."],
+      ["Active Learning","A model strategically selecting which unlabeled examples would be most useful to have labeled next."],
+      ["Federated Learning","Training one model across many devices' local data without the raw data leaving each device."],
+      ["Ensemble Learning","Combining predictions from multiple models to get a more accurate result than any single one."],
+      ["Meta-Learning","“Learning to learn” — training a model to adapt quickly to new tasks based on experience across many prior tasks."]
+    ]},
+    { id:3, name:"Neural Network Architectures", blurb:"The wiring diagrams — how artificial neurons are arranged to solve different kinds of problems.", terms:[
+      ["Artificial Neuron","A unit that computes a weighted sum of its inputs and passes it through an activation function."],
+      ["Perceptron","The simplest neural network — a single-layer linear classifier, the ancestor of all deep learning."],
+      ["Multilayer Perceptron (MLP)","A neural network with one or more hidden layers of fully connected neurons."],
+      ["Activation Function","A nonlinear function (ReLU, sigmoid, softmax) applied to a neuron's output so the network can learn nonlinear patterns."],
+      ["Convolutional Neural Network (CNN)","A network using sliding filters to detect local patterns — the workhorse of image processing."],
+      ["Recurrent Neural Network (RNN)","A network with loops that carry information from one step in a sequence to the next."],
+      ["LSTM","Long Short-Term Memory — an RNN variant with gates that let it retain information over long sequences."],
+      ["Transformer","The architecture behind modern LLMs — processes an entire sequence at once using self-attention instead of recurrence."],
+      ["Attention Mechanism","A technique letting a model weigh how much each part of the input matters when producing each part of the output."],
+      ["Self-Attention","Attention applied within a single sequence, letting every token weigh every other token."],
+      ["Encoder-Decoder","An architecture where one network compresses input into a representation and another generates output from it."],
+      ["Autoencoder","A network trained to compress input into a smaller representation and reconstruct it — used for compression or anomaly detection."],
+      ["Generative Adversarial Network (GAN)","Two networks — a generator and a discriminator — trained against each other to produce realistic synthetic data."],
+      ["Diffusion Model","A generative model that learns to reverse a gradual noising process, producing an image or audio from pure noise."],
+      ["Graph Neural Network (GNN)","A network designed to operate directly on graph-structured data such as social networks or molecules."]
+    ]},
+    { id:4, name:"Training Mechanics", blurb:"What actually happens inside the training loop, step by step, to turn random weights into a working model.", terms:[
+      ["Training","The process of adjusting a model's parameters on data so its predictions improve."],
+      ["Backpropagation","The algorithm that computes how much each weight contributed to the error, working backward through the network."],
+      ["Gradient Descent","An optimization method that nudges parameters in the direction that most reduces the loss."],
+      ["Stochastic Gradient Descent (SGD)","Gradient descent computed on small random batches of data rather than the whole dataset at once."],
+      ["Loss Function","The formula measuring how wrong a model's prediction is — training exists to minimize it."],
+      ["Learning Rate","The size of the step taken during each gradient descent update; too high overshoots, too low stalls."],
+      ["Epoch","One complete pass of the training algorithm through the entire training dataset."],
+      ["Batch / Mini-Batch","A subset of training examples processed together before the model's parameters are updated."],
+      ["Overfitting","A model learning the training data too closely, including its noise, so it performs worse on new data."],
+      ["Underfitting","A model too simple to capture the underlying pattern, performing poorly even on training data."],
+      ["Regularization","Techniques (like L1/L2 penalties) that discourage overly complex models to reduce overfitting."],
+      ["Dropout","A regularization technique that randomly disables neurons during training to prevent over-reliance on any one path."],
+      ["Hyperparameter","A setting chosen before training (learning rate, batch size, layer count) rather than learned from data."],
+      ["Vanishing / Exploding Gradient","A training failure where gradients shrink toward zero or grow uncontrollably in deep networks."],
+      ["Fine-Tuning","Continuing to train an already-trained model on a smaller, task-specific dataset."],
+      ["Pretraining","The initial, large-scale training phase that gives a model its general capabilities before fine-tuning."]
+    ]},
+    { id:5, name:"Natural Language Processing", blurb:"How text is turned into numbers a model can compute with, and back again.", terms:[
+      ["Tokenization","Splitting text into the smaller units — words, subwords, or characters — a model actually processes."],
+      ["Token","The basic unit of text a language model reads or generates; roughly three-quarters of an English word on average."],
+      ["Embedding","A dense vector of numbers representing a word, sentence, or item such that similar meanings sit close together in that space."],
+      ["Word2Vec","An early technique for learning word embeddings from the words that tend to surround each word."],
+      ["Corpus","A large structured collection of text used to train or evaluate a language model."],
+      ["N-gram","A contiguous sequence of N words or tokens, used in classic statistical language models."],
+      ["Part-of-Speech (POS) Tagging","Labeling each word in a sentence with its grammatical role — noun, verb, adjective."],
+      ["Named Entity Recognition (NER)","Identifying and classifying real-world entities in text, such as people, places, and organizations."],
+      ["Sentiment Analysis","Classifying text by the emotional tone or opinion it expresses."],
+      ["Language Model","A model trained to predict the probability of a sequence of words, the basis of all modern text generation."],
+      ["Perplexity","A metric for how well a language model predicts a sample of text — lower means less “surprised.”"],
+      ["Sequence-to-Sequence (Seq2Seq)","A model architecture that maps an input sequence to an output sequence of a different length, e.g. translation."],
+      ["Machine Translation","Automatically translating text from one language to another."]
+    ]},
+    { id:6, name:"Generative AI & LLMs", blurb:"The layer most people mean when they say “AI” today — models that produce novel text, images, audio, or code.", terms:[
+      ["Large Language Model (LLM)","A transformer-based model trained on massive text corpora to generate and reason about language."],
+      ["Foundation Model","A large model pretrained on broad data that can be adapted to many downstream tasks."],
+      ["Prompt","The input text given to a generative model to elicit a response."],
+      ["Prompt Engineering","Deliberately structuring a prompt to reliably get better, more accurate model outputs."],
+      ["System Prompt","Instructions given to a model before the conversation begins, setting its behavior, role, or constraints."],
+      ["Context Window","The maximum amount of text (in tokens) a model can consider at once when generating a response."],
+      ["Temperature","A sampling setting controlling randomness — low values make output more deterministic, high values more varied."],
+      ["Top-k / Top-p Sampling","Sampling methods that restrict which candidate next-tokens a model can choose from during generation."],
+      ["Chain-of-Thought (CoT)","Prompting or training a model to generate intermediate reasoning steps before its final answer."],
+      ["Hallucination","A model generating plausible-sounding but false or unsupported information."],
+      ["Retrieval-Augmented Generation (RAG)","Retrieving relevant documents from an external source and feeding them into the prompt so a model can ground its answer in them."],
+      ["Instruction Tuning","Fine-tuning a model on examples of instructions and correct responses so it follows natural-language commands."],
+      ["Multimodal Model","A model that processes and/or generates more than one type of data — text, image, audio, video — together."],
+      ["Emergent Abilities","Capabilities that appear in large models but are absent in smaller versions of the same architecture, without being directly trained for."],
+      ["Latent Space","The internal, compressed numerical space where a model represents the meaning of its inputs."]
+    ]},
+    { id:7, name:"AI Agents & Agentic Systems", blurb:"Models that don't just answer — they plan, call tools, and act toward a goal across multiple steps.", terms:[
+      ["AI Agent","A system that uses a model to perceive a situation, decide on actions, and act — often repeatedly — toward a goal."],
+      ["Agentic AI","AI systems designed to operate with a degree of autonomy, planning and executing multi-step tasks with minimal input per step."],
+      ["Tool Use / Function Calling","A model's ability to invoke external functions, APIs, or tools and use their results in its response."],
+      ["Model Context Protocol (MCP)","An open standard for connecting AI models to external tools, data sources, and services in a consistent way."],
+      ["ReAct (Reason + Act)","An agent pattern that interleaves reasoning steps with tool-use actions, observing results before deciding the next step."],
+      ["Multi-Agent System","An architecture where several specialized agents collaborate, negotiate, or divide a task among themselves."],
+      ["Orchestration","Coordinating the sequence, routing, and hand-offs between multiple models, agents, or tool calls in a workflow."],
+      ["Planning","An agent breaking a goal down into an ordered sequence of steps or subgoals before acting."],
+      ["Agent Memory","An agent's mechanism for retaining information across steps or sessions — short-term (context) or long-term (stored)."],
+      ["Vector Database","A database optimized for storing embeddings and retrieving items by semantic similarity rather than exact match."],
+      ["Retrieval","The step of searching an external knowledge source for information relevant to the current query."],
+      ["Guardrails (Agent)","Rules or checks that constrain what actions an autonomous agent is permitted to take."]
+    ]},
+    { id:8, name:"Computer Vision", blurb:"Teaching models to interpret pixels — what's in an image, where it is, and what it's doing.", terms:[
+      ["Image Classification","Assigning a single label to an entire image from a fixed set of categories."],
+      ["Object Detection","Locating and classifying multiple objects within an image, typically with bounding boxes."],
+      ["Image Segmentation","Classifying an image at the pixel level, tracing the exact outline of each object."],
+      ["Convolution","A sliding-filter operation that detects local visual patterns like edges, textures, and shapes."],
+      ["Pooling","Downsampling a feature map to reduce its size while keeping the strongest signals."],
+      ["Optical Character Recognition (OCR)","Converting images of text into machine-readable text."],
+      ["Feature Extraction","Transforming raw input into a smaller set of informative attributes a model can learn from more easily."],
+      ["Pose Estimation","Detecting the position and orientation of a body or object's key points in an image."],
+      ["Image Generation","Producing new, synthetic images from a text prompt or noise input, typically via a diffusion or GAN model."]
+    ]},
+    { id:9, name:"Data & Feature Engineering", blurb:"The unglamorous work of shaping raw data into something a model can actually learn from.", terms:[
+      ["Dataset","A structured collection of examples used to train, validate, or test a model."],
+      ["Train / Validation / Test Split","Dividing data into a set to learn from, a set to tune on, and a held-out set to measure final performance."],
+      ["Feature","An individual measurable input variable used by a model to make predictions."],
+      ["Feature Engineering","Manually designing or transforming input variables to make patterns easier for a model to learn."],
+      ["Labeling / Annotation","Assigning the correct output (label) to each example in a dataset, usually by hand, for supervised training."],
+      ["Data Augmentation","Artificially expanding a training set by creating modified copies of existing examples."],
+      ["Normalization","Rescaling input values to a common range so no single feature dominates training due to its scale."],
+      ["Synthetic Data","Artificially generated data used to supplement or replace real data for training or testing."],
+      ["Data Pipeline","The automated sequence of steps that moves data from raw source to model-ready form."],
+      ["Data Contract","A formal agreement on the structure, quality, and semantics of data exchanged between producer and consumer systems."],
+      ["Data Mesh","A decentralized approach treating data as a product owned by domain teams rather than one central pipeline."]
+    ]},
+    { id:10, name:"Evaluation & Metrics", blurb:"How you know whether a model is actually any good, and at what, exactly.", terms:[
+      ["Accuracy","The proportion of predictions a model gets exactly right."],
+      ["Precision","Of everything a model labeled positive, the proportion that was actually positive."],
+      ["Recall","Of everything that was actually positive, the proportion the model correctly found."],
+      ["F1 Score","The harmonic mean of precision and recall, balancing both into one number."],
+      ["Confusion Matrix","A table breaking down a classifier's predictions against actual labels across every class."],
+      ["ROC / AUC","A curve and summary score describing a classifier's tradeoff between true and false positive rates."],
+      ["Cross-Validation","Repeatedly splitting data into different train/test partitions to get a more reliable performance estimate."],
+      ["Benchmark","A standardized dataset and task used to compare different models' performance under the same conditions."],
+      ["Evals","Structured tests — automated or human — used to measure an AI system's quality, safety, or behavior before and after changes."],
+      ["BLEU / ROUGE Score","Automated metrics comparing generated text against reference text, common in translation and summarization."],
+      ["Human Evaluation","Having people directly judge model outputs for quality, helpfulness, or correctness where automated metrics fall short."]
+    ]},
+    { id:11, name:"Ethics, Safety & Alignment", blurb:"Making sure a capable model behaves the way it should, and that you can tell when it doesn't.", terms:[
+      ["Bias (Fairness sense)","Systematic skew in a model's outputs that disadvantages particular groups, usually inherited from training data."],
+      ["Fairness","The property of a model treating different groups equitably according to a chosen definition of equity."],
+      ["Explainability (XAI)","Techniques for describing, in human terms, why a model produced a particular output."],
+      ["Interpretability","The degree to which a human can understand a model's internal reasoning, not just its output."],
+      ["Alignment","Ensuring an AI system's goals and behavior actually match what its designers and users intend."],
+      ["Guardrails","Constraints — rules, filters, or classifiers — placed around a model to keep its outputs within acceptable bounds."],
+      ["Red Teaming","Deliberately probing a model with adversarial inputs to find ways it can be made to fail or misbehave."],
+      ["Prompt Injection","An attack that hides malicious instructions inside content a model processes, hijacking its behavior."],
+      ["Jailbreaking","Crafting inputs designed to bypass a model's safety training or restrictions."],
+      ["Model Card","A standardized document describing a model's intended use, training data, limitations, and known risks."],
+      ["Responsible AI","The broader practice of designing, deploying, and governing AI systems to minimize harm and maximize accountability."]
+    ]},
+    { id:12, name:"Infrastructure & MLOps", blurb:"What it takes to train, serve, and keep a model running reliably in production.", terms:[
+      ["GPU / TPU","Specialized processors — graphics or tensor processing units — built for the parallel math training and inference require."],
+      ["Framework","Software libraries (PyTorch, TensorFlow) that provide the building blocks for defining and training models."],
+      ["Model Serving","Deploying a trained model behind an interface so applications can send it inputs and get predictions back."],
+      ["MLOps","The practices and tooling for reliably building, deploying, monitoring, and updating models in production, borrowed from DevOps."],
+      ["Model Registry","A system for versioning, storing, and tracking trained models as they move toward production."],
+      ["Model Drift","A deployed model's performance degrading over time as real-world data diverges from its training data."],
+      ["Quantization","Reducing the numeric precision of a model's weights to make it smaller and faster with minimal accuracy loss."],
+      ["Knowledge Distillation","Training a smaller “student” model to mimic a larger “teacher” model's behavior."],
+      ["Edge AI","Running inference directly on local devices (phones, sensors) instead of a remote server."],
+      ["Checkpoint","A saved snapshot of a model's parameters at a point during training, allowing training to resume or roll back."]
+    ]},
+    { id:13, name:"Specialized Applications", blurb:"Where these building blocks show up as products — recommending, forecasting, listening, and simulating the physical world.", terms:[
+      ["Recommendation System","A model predicting which items a user is likely to want, based on their behavior and similar users'."],
+      ["Speech Recognition","Converting spoken audio into text."],
+      ["Speech Synthesis (TTS)","Generating spoken audio from text."],
+      ["Anomaly Detection","Identifying data points that deviate significantly from expected patterns, used for fraud or fault detection."],
+      ["Time Series Forecasting","Predicting future values of a sequence based on its historical pattern over time."],
+      ["Knowledge Graph","A structured network of entities and their relationships, used to represent and query real-world facts."],
+      ["Expert System","An early AI approach encoding a human expert's rules and knowledge into an if-then decision system."],
+      ["Robotics / Embodied AI","AI systems that perceive and act within the physical world through sensors and actuators."],
+      ["Digital Twin","A live virtual model of a physical system, kept in sync with real data to simulate and predict its behavior."]
+    ]}
+  ];
+
+  var totalTerms = CATEGORIES.reduce(function(s,c){ return s + c.terms.length; }, 0);
+  document.getElementById('countBadge').textContent = totalTerms + ' terms · ' + CATEGORIES.length + ' categories';
+
+  var root = {
+    name:"AI",
+    children: CATEGORIES.map(function(c){
+      return {
+        name:c.name, cat:c.id, def:c.blurb,
+        children:c.terms.map(function(t){ return { name:t[0], def:t[1], cat:c.id }; })
+      };
+    })
+  };
+
+  var hierarchy = d3.hierarchy(root);
+  var maxRadius = 430;
+  var tree = d3.tree()
+    .size([2*Math.PI, maxRadius])
+    .separation(function(a,b){ return (a.parent===b.parent ? 1 : 2.4) / a.depth; });
+  tree(hierarchy);
+
+  function radialPoint(x,y){
+    return [y*Math.cos(x-Math.PI/2), y*Math.sin(x-Math.PI/2)];
+  }
+
+  var svg = d3.select('#map');
+  var g = svg.append('g').attr('id','viewport');
+
+  var linksSel = g.append('g').attr('class','links')
+    .selectAll('path')
+    .data(hierarchy.links())
+    .join('path')
+    .attr('class', function(d){ return 'link cat-' + (d.target.data.cat || 0); })
+    .attr('d', d3.linkRadial().angle(function(d){return d.x;}).radius(function(d){return d.y;}));
+
+  var nodesSel = g.append('g').attr('class','nodes')
+    .selectAll('g')
+    .data(hierarchy.descendants())
+    .join('g')
+    .attr('class', function(d){ return 'node depth-' + d.depth + (d.data.cat ? ' cat-' + d.data.cat : ''); })
+    .attr('transform', function(d){ var p = radialPoint(d.x,d.y); return 'translate(' + p[0] + ',' + p[1] + ')'; })
+    .on('click', function(event,d){ event.stopPropagation(); selectNode(d); });
+
+  nodesSel.append('circle')
+    .attr('r', function(d){ return d.depth===0 ? 10 : d.depth===1 ? 6.5 : 3.6; });
+
+  nodesSel.filter(function(d){ return d.depth < 2; })
+    .append('text')
+    .attr('dy','0.31em')
+    .attr('x', function(d){ return (d.x < Math.PI) === !d.children ? 9 : -9; })
+    .attr('text-anchor', function(d){ return (d.x < Math.PI) === !d.children ? 'start' : 'end'; })
+    .attr('transform', function(d){
+      var deg = d.x * 180/Math.PI - 90;
+      return 'rotate(' + deg + ')' + (d.x >= Math.PI ? ' rotate(180)' : '');
+    })
+    .text(function(d){ return d.data.name; });
+
+  nodesSel.filter(function(d){ return d.depth === 2; })
+    .append('text')
+    .attr('class','leaf-label')
+    .attr('dy','0.31em')
+    .attr('x', function(d){ return d.x < Math.PI ? 7 : -7; })
+    .attr('text-anchor', function(d){ return d.x < Math.PI ? 'start' : 'end'; })
+    .attr('transform', function(d){
+      var deg = d.x * 180/Math.PI - 90;
+      return 'rotate(' + deg + ')' + (d.x >= Math.PI ? ' rotate(180)' : '');
+    })
+    .text(function(d){ return d.data.name; });
+
+  // fit viewBox to content
+  var bbox = g.node().getBBox();
+  var pad = 60;
+  var vb = [bbox.x - pad, bbox.y - pad, bbox.width + pad*2, bbox.height + pad*2];
+  svg.attr('viewBox', vb.join(' '));
+
+  var zoom = d3.zoom().scaleExtent([0.35, 7]).on('zoom', function(event){
+    g.attr('transform', event.transform);
+    svg.classed('zoomed-in', event.transform.k > 1.15);
+  });
+  svg.call(zoom).on('dblclick.zoom', null);
+
+  // ---- selection / info panel ----
+  var infoPanel = document.getElementById('infoPanel');
+  var infoCategory = document.getElementById('infoCategory');
+  var infoTerm = document.getElementById('infoTerm');
+  var infoDef = document.getElementById('infoDef');
+  var selected = null;
+
+  function categoryById(id){
+    for (var i=0;i<CATEGORIES.length;i++){ if (CATEGORIES[i].id===id) return CATEGORIES[i]; }
+    return null;
+  }
+
+  function selectNode(d){
+    if (selected) selected.classed('selected', false);
+    var thisNode = d3.select(nodesSel.filter(function(n){ return n===d; }).nodes()[0]);
+    thisNode.classed('selected', true);
+    selected = thisNode;
+
+    infoPanel.hidden = false;
+    if (d.depth === 0){
+      infoCategory.textContent = 'Atlas';
+      infoCategory.style.background = 'var(--accent)';
+      infoTerm.textContent = 'AI Terminology Atlas';
+      infoDef.textContent = totalTerms + ' terms across ' + CATEGORIES.length + ' categories. Click any branch or term to read its definition.';
+    } else if (d.depth === 1){
+      infoCategory.textContent = 'Category';
+      infoCategory.style.background = 'var(--cat-' + d.data.cat + ')';
+      infoTerm.textContent = d.data.name;
+      infoDef.textContent = d.data.def;
+    } else {
+      var cat = categoryById(d.data.cat);
+      infoCategory.textContent = cat ? cat.name : '';
+      infoCategory.style.background = 'var(--cat-' + d.data.cat + ')';
+      infoTerm.textContent = d.data.name;
+      infoDef.textContent = d.data.def;
+    }
+  }
+
+  document.getElementById('infoClose').addEventListener('click', function(){
+    infoPanel.hidden = true;
+    if (selected){ selected.classed('selected', false); selected = null; }
+  });
+
+  // ---- legend ----
+  var legendList = document.getElementById('legendList');
+  var activeCat = null;
+  CATEGORIES.forEach(function(c){
+    var li = document.createElement('li');
+    var btn = document.createElement('button');
+    btn.className = 'legend-item';
+    btn.dataset.cat = c.id;
+    btn.innerHTML = '<span class="legend-dot" style="background:var(--cat-' + c.id + ')"></span>' +
+      '<span>' + c.name + '</span><span class="legend-count">' + c.terms.length + '</span>';
+    btn.addEventListener('click', function(){
+      activeCat = (activeCat === c.id) ? null : c.id;
+      updateFilterView();
+      document.querySelectorAll('.legend-item').forEach(function(el){
+        el.classList.toggle('active', activeCat !== null && Number(el.dataset.cat) === activeCat);
+      });
+    });
+    li.appendChild(btn);
+    legendList.appendChild(li);
+  });
+
+  function updateFilterView(){
+    var q = searchInput.value.trim().toLowerCase();
+    nodesSel.classed('dim', function(d){
+      if (d.depth === 0) return false;
+      var catMismatch = activeCat !== null && d.data.cat !== activeCat;
+      if (catMismatch) return true;
+      if (!q) return false;
+      var self = d.data.name.toLowerCase().indexOf(q) !== -1;
+      var desc = d.descendants().some(function(n){ return n.data.name && n.data.name.toLowerCase().indexOf(q) !== -1; });
+      return !self && !desc;
+    });
+    nodesSel.classed('match', function(d){
+      return !!q && d.depth > 0 && d.data.name.toLowerCase().indexOf(q) !== -1;
+    });
+    linksSel.classed('dim', function(d){
+      var t = d.target;
+      var catMismatch = activeCat !== null && t.data.cat !== activeCat;
+      if (catMismatch) return true;
+      if (!q) return false;
+      var self = t.data.name.toLowerCase().indexOf(q) !== -1;
+      var desc = t.descendants().some(function(n){ return n.data.name && n.data.name.toLowerCase().indexOf(q) !== -1; });
+      return !self && !desc;
+    });
+  }
+
+  document.getElementById('legendToggle').addEventListener('click', function(){
+    var legend = document.getElementById('legend');
+    legend.hidden = !legend.hidden;
+  });
+  document.getElementById('legendClose').addEventListener('click', function(){
+    document.getElementById('legend').hidden = true;
+  });
+
+  // ---- search ----
+  var searchInput = document.getElementById('search');
+  var clearSearch = document.getElementById('clearSearch');
+
+  searchInput.addEventListener('input', function(){
+    clearSearch.hidden = !searchInput.value;
+    updateFilterView();
+    var q = searchInput.value.trim().toLowerCase();
+    if (!q) return;
+    var firstMatch = hierarchy.descendants().find(function(d){
+      return d.depth > 0 && d.data.name.toLowerCase().indexOf(q) !== -1;
+    });
+    if (firstMatch){
+      var p = radialPoint(firstMatch.x, firstMatch.y);
+      var k = 2.2;
+      var t = d3.zoomIdentity.scale(k).translate(-p[0], -p[1]);
+      svg.transition().duration(500).call(zoom.transform, t);
+    }
+  });
+  clearSearch.addEventListener('click', function(){
+    searchInput.value = '';
+    clearSearch.hidden = true;
+    updateFilterView();
+    searchInput.focus();
+  });
+
+  // ---- zoom controls ----
+  document.getElementById('zoomIn').addEventListener('click', function(){
+    svg.transition().duration(250).call(zoom.scaleBy, 1.35);
+  });
+  document.getElementById('zoomOut').addEventListener('click', function(){
+    svg.transition().duration(250).call(zoom.scaleBy, 1/1.35);
+  });
+  document.getElementById('resetView').addEventListener('click', function(){
+    svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity);
+    activeCat = null;
+    searchInput.value = '';
+    clearSearch.hidden = true;
+    document.querySelectorAll('.legend-item').forEach(function(el){ el.classList.remove('active'); });
+    updateFilterView();
+    if (selected){ selected.classed('selected', false); selected = null; }
+    infoPanel.hidden = true;
+  });
+
+  svg.on('click', function(event){
+    if (event.target === svg.node()){
+      if (selected){ selected.classed('selected', false); selected = null; }
+    }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){
+      searchInput.value = '';
+      clearSearch.hidden = true;
+      updateFilterView();
+      document.getElementById('legend').hidden = true;
+      infoPanel.hidden = true;
+      if (selected){ selected.classed('selected', false); selected = null; }
+    }
+  });
+
+  // open the root with a short welcome on load
+  selectNode(hierarchy);
+})();
+</script>
